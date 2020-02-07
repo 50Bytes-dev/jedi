@@ -21,7 +21,7 @@ class Candidate(models.Model):
     planet = models.ForeignKey(Planet, on_delete=models.CASCADE, verbose_name='Планета')
     age = models.PositiveIntegerField(verbose_name='Возраст')
     email = models.EmailField(verbose_name='Почта')
-    jedi = models.ForeignKey(Jedi, null=True, on_delete=models.CASCADE)
+    jedi = models.ForeignKey(Jedi, null=True, on_delete=models.CASCADE, related_name='podavans')
 
     def __str__(self):
         return self.name

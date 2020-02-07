@@ -1,5 +1,5 @@
 from django import forms
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
@@ -25,19 +25,27 @@ class CandidateCreate(View):
         if bound_form.is_valid():
             new_post = bound_form.save()
             return redirect('question', new_post.id)
-        return render(request, 'list_task.html', context={'form': bound_form})
+        return render(request, 'index.html', context={'form': bound_form})
 
 
 class JediList(View):
 
     def get(self, request):
-        jedis = Jedi.objects.select_related('planet').all()
+        filter = request.GET.get('filter')
+        jedis = Jedi.objects.annotate(
+            podavans_count=Count('podavans')
+        ).select_related('planet').all()
+        if filter is not None:
+            jedis = jedis.filter(podavans_count__gt=1)
         return render(request, 'list_jedi.html', context={'jedis': jedis})
 
 
 class JediSetPadavan(View):
 
     def get(self, request, jedi_id, candidate_id):
+        if Candidate.objects.filter(jedi_id=jedi_id).count() == 3:
+            return render(request, 'access_denied.html', context={'jedi_id': jedi_id})
+
         Candidate.objects.filter(pk=candidate_id).update(jedi_id=jedi_id)
         return redirect('candidatelist', jedi_id)
 
