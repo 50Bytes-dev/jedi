@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+    <div class="contact-section">
+        <h1>Добавление кандидата</h1>
+        <hr>
+        <form class="contact-form-class" action="{% url 'candidatecreate' %}" method="post">
+            {% csrf_token %}
+            <h1>Введите имя: {{ form.name }}</h1>
+            <h1>Выберите планету: {{ form.planet }}</h1>
+            <h1>Ваш возраст: {{ form.age }}</h1>
+            <h1>Почта: {{ form.email }}</h1>
+
+            <input type="submit" class="contact-form-btn" data-toggle="modal" data-target="#exampleModal"
+                   value="Далее">
+
+        </form>
+    </div>
+
+{% endblock %}

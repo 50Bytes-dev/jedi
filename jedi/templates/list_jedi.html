@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Джедаи{% endblock %}
+
+{% block content %}
+
+    <div class="container-fluid" style="font-size: 20px;">
+        <div class="text-center">Кто ты из джедаев?</div>
+        {% for jedi in jedis %}
+        <div class="row justify-content-center text-center">
+            <div class="col"><hr>{{ jedi }} <a href="{% url 'candidatelist' jedi_id=jedi.id %}">[Это я]</a></div>
+        </div>
+        {% empty %}
+        <div class="row justify-content-center text-center">
+            <div class="col">Джедаи вымерли :(</div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

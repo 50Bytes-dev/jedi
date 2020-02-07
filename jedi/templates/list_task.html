@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+
+    <div class="contact-section">
+        <h1>Добавление кандидата</h1>
+        <hr>
+        <form class="contact-form-class" action="{% url 'question' candidate_id=candidate_id %}" method="post">
+            {% csrf_token %}
+            {% for form in formset %}
+                {{ form.id }}
+                {{ form.text.value }}<br/>
+                Согласен: {{ form.answer }}<br/><br/>
+            {% endfor %}
+            {{ formset.management_form }}
+
+            <input type="submit" class="contact-form-btn" data-toggle="modal" data-target="#exampleModal"
+                   value="Отправить">
+        </form>
+    </div>
+
+{% endblock %}
